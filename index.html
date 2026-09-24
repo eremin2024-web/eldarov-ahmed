@@ -60,10 +60,9 @@ td{font-size:14px}
   </section>
 
   <div id="megafonView">
-  <section class="stats">
+  <section class="stats" style="grid-template-columns:repeat(2,1fr)">
     <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="total">—</div></article>
-    <article class="card kpi"><div class="label">Уникальных масок</div><div class="value" id="masksCount">—</div></article>
-    <article class="card kpi"><div class="label">Найдено</div><div class="value" id="found">—</div></article>
+    <article class="card kpi"><div class="label">Активировано</div><div class="value" id="activatedCount">—</div></article>
   </section>
 
   <section class="section">
@@ -106,7 +105,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-4</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-5</div>
 </main>
 
 <script>
@@ -175,8 +174,9 @@ async function load(){
   DATA=nums.map(n=>({number:n,mask:maskFor(n)}));
   ACTIVATIONS=activationData;
   document.getElementById('total').textContent=N(DATA.length);
-  document.getElementById('masksCount').textContent=N(new Set(DATA.map(x=>x.mask)).size);
   document.getElementById('exclusionCount').textContent=N(EXCLUSION_SET.size);
+  const activatedInMegafon=new Set(ACTIVATIONS.filter(x=>EXCLUSION_SET.has(x.number)).map(x=>x.number));
+  document.getElementById('activatedCount').textContent=N(activatedInMegafon.size);
   render();
   renderActivations();
 }
@@ -187,7 +187,6 @@ function render(){
     const mask=x.mask.toLowerCase();
     return (digits && x.number.includes(digits)) || mask.includes(q);
   });
-  document.getElementById('found').textContent=N(filtered.length);
   document.getElementById('rows').innerHTML=filtered.map((x,i)=>
     '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td></tr>'
   ).join('') || '<tr><td colspan="3">Ничего не найдено</td></tr>';
