@@ -118,7 +118,7 @@ td{font-size:14px}
         <input id="activationSearch" class="search" type="search" placeholder="Поиск по номеру, оператору, дате или тарифу…" autocomplete="off">
         <div class="meta">Номера из «Мегафон Чечня» в активациях не учитываются</div>
       </div>
-      <div class="month-tabs" id="activationMonths"></div>
+      
       <section class="section">
         <h2 class="section-title">Динамика активаций по месяцам</h2>
         <div class="card" style="padding:18px 20px">
@@ -142,10 +142,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-23</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-24</div>
 </main>
 
-<script src="data/activations-loader.js?v=23"></script>
+<script src="data/activations-loader.js?v=24"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -360,8 +360,7 @@ function renderActivations(){
   const digits=q.replace(/\D/g,'');
   const valid=ACTIVATIONS.filter(x=>!EXCLUSION_SET.has(x.number));
   renderActivationTrend(valid);
-  renderActivationMonths(valid);
-  const byMonth=ACTIVE_MONTH==='all'?valid:valid.filter(x=>activationMonthKey(x.date)===ACTIVE_MONTH);
+  const byMonth=valid;
   const filtered=!q?byMonth:byMonth.filter(x=>
     (digits && x.number.includes(digits)) ||
     x.operator.toLowerCase().includes(q) ||
