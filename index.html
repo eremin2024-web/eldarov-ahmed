@@ -63,9 +63,10 @@ td{font-size:14px}
   </section>
 
   <div id="megafonView">
-  <section class="stats" style="grid-template-columns:repeat(2,1fr)">
+  <section class="stats">
     <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="total">—</div></article>
     <article class="card kpi"><div class="label">Активировано</div><div class="value" id="activatedCount">—</div></article>
+    <article class="card kpi"><div class="label">Остаток</div><div class="value" id="remainingCount">—</div></article>
   </section>
 
   <section class="section">
@@ -110,7 +111,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-14</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-15</div>
 </main>
 
 <script>
@@ -250,6 +251,7 @@ function render(){
   document.getElementById('total').textContent=N(base.length);
   const activatedInBase=new Set(base.filter(x=>activationMap.has(x.number)).map(x=>x.number));
   document.getElementById('activatedCount').textContent=N(activatedInBase.size);
+  document.getElementById('remainingCount').textContent=N(base.length-activatedInBase.size);
 
   document.getElementById('rows').innerHTML=filtered.map((x,i)=>{
     const activated=activationMap.get(x.number)||'—';
