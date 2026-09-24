@@ -111,9 +111,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-17</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-18</div>
 </main>
 
+<script src="data/activations-loader.js"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -172,10 +173,7 @@ async function load(){
       if(!r.ok) throw new Error(f);
       return r.text();
     }))),
-    fetch('data/activations.json').then(r=>{
-      if(!r.ok) throw new Error('data/activations.json');
-      return r.json();
-    })
+    window.loadExtendedActivations()
   ]);
   const nums=parts.flatMap(t=>t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean));
   EXCLUSION_SET=new Set(nums);
@@ -212,12 +210,12 @@ function renderActivationMonths(valid){
   }));
 }
 function megafonRowMonth(number,activationMap){
-  const shipped=(number==='9288853655'||number==='9288853832')?'03.09.2026':'';
-  const activated=activationMap.get(number)||'';
-  const source=shipped||activated;
-  if(!source)return '';
-  const m=source.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-  return m?m[3]+'-'+m[2]:'';
+  const rec=activationMap.get(number);
+  if(!rec)return '';
+  let shipped=rec.moved||'';
+  if(!shipped&&(number==='9288853655'||number==='9288853832'))shipped='03.09.2026';
+  const source=shipped||rec.date||'';
+  return activationMonthKey(source);
 }
 function renderMegafonMonths(activationMap){
   const months=[...new Set(DATA.map(x=>megafonRowMonth(x.number,activationMap)).filter(Boolean))].sort();
@@ -241,7 +239,8 @@ function parseRuDate(d){
 function render(){
   const q=document.getElementById('search').value.trim().toLowerCase().replace(/\s+/g,'');
   const digits=q.replace(/\D/g,'');
-  const activationMap=new Map(ACTIVATIONS.map(x=>[x.number,x.date.split(' ')[0]]));
+  const activationMap=new Map();
+  ACTIVATIONS.forEach(x=>{if(!activationMap.has(x.number))activationMap.set(x.number,x)});
   renderMegafonMonths(activationMap);
 
   let base=DATA;
@@ -254,8 +253,10 @@ function render(){
   document.getElementById('remainingCard').classList.toggle('hidden',monthlyView);
 
   const prepared=base.map(x=>{
-    const activated=activationMap.get(x.number)||'—';
-    const shipped=(x.number==='9288853655'||x.number==='9288853832')?'03.09.2026':'—';
+    const rec=activationMap.get(x.number);
+    const activated=rec&&rec.date?rec.date.split(' ')[0]:'—';
+    let shipped=rec&&rec.moved?rec.moved.split(' ')[0]:'—';
+    if(shipped==='—'&&(x.number==='9288853655'||x.number==='9288853832'))shipped='03.09.2026';
     const latest=Math.max(parseRuDate(shipped),parseRuDate(activated));
     const hasDate=latest>0;
     return {...x,activated,shipped,latest,hasDate};
