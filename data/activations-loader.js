@@ -7,7 +7,8 @@ window.loadExtendedActivations=async function(){
   ];
   const b64Files=[
     'data/activations_may_jul_5a.b64',
-    'data/activations_may_jul_5b.b64',
+    'data/activations_may_jul_5b1.b64',
+    'data/activations_may_jul_5b2.b64',
     'data/activations_may_jul_6a.b64',
     'data/activations_may_jul_6b.b64',
     'data/activations_may_jul_7a.b64',
