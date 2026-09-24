@@ -1,147 +1,150 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Агентство Связи — Дашборд продаж</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Эльдаров Ахмед — Мегафон Чечня</title>
 <style>
-:root{--bg:#f4f6f5;--card:#fff;--dark:#111417;--dark2:#191d20;--text:#171a1d;--muted:#7b8488;--line:#e5e9e7;--accent:#35d6b4;--accent2:#16a989;--soft:#e5fbf5;--shadow:0 14px 36px rgba(17,20,23,.07);--r:20px;--sidebar:230px}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}.app{min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);background:var(--dark);padding:24px 18px;z-index:30;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:11px;color:white;font-weight:800;letter-spacing:.06em;font-size:13px;text-transform:uppercase;padding:4px 8px 22px}.brandmark{width:13px;height:13px;background:var(--accent);border-radius:4px;transform:rotate(45deg);box-shadow:0 0 0 6px rgba(53,214,180,.12)}.nav{display:flex;flex-direction:column;gap:8px}.nav button{appearance:none;border:0;background:transparent;color:#aeb7b4;text-align:left;padding:12px 13px;border-radius:13px;font:inherit;font-weight:700;cursor:pointer;transition:.18s}.nav button:hover{background:rgba(255,255,255,.06);color:white}.nav button.active{background:rgba(53,214,180,.14);color:white;box-shadow:inset 3px 0 0 var(--accent)}.sidebar-foot{margin-top:auto;color:#7f8986;font-size:11px;line-height:1.5;padding:14px 8px}.main{margin-left:var(--sidebar);padding:26px 26px 52px}.shell{max-width:1500px;margin:0 auto}.hero{background:var(--dark);color:#fff;border-radius:28px;padding:30px 34px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:340px;height:340px;right:-130px;top:-170px;border-radius:50%;background:var(--accent);opacity:.16}.hero-row{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;position:relative;z-index:1}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#aeb7b4;font-weight:800}.hero h1{margin:8px 0 0;font-size:clamp(30px,3vw,46px);line-height:1.04;letter-spacing:-.04em}.hero p{margin:10px 0 0;color:#aeb7b4;font-size:14px}.accent-line{width:70px;height:4px;border-radius:9px;background:var(--accent);margin-top:22px}.tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.pill,.select{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#fff;padding:10px 13px;border-radius:999px;font-size:13px}.select{appearance:none;outline:none;cursor:pointer;padding-right:34px}.select option{color:#111}.grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}.kpi{padding:20px 20px 19px;min-height:124px;position:relative;overflow:hidden}.kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}.label{color:var(--muted);font-size:12px;font-weight:700}.value{font-size:clamp(23px,2vw,32px);font-weight:850;letter-spacing:-.04em;margin-top:18px;white-space:nowrap}.section{margin-top:22px}.section-title{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:18px;font-weight:850;letter-spacing:-.02em}.section-title:before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--soft)}.table-card{overflow:hidden}.scroll{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th{background:#fafbfa;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap}.table td{padding:14px 16px;border-bottom:1px solid #edf0ef;font-size:13px}.table tr:last-child td{border-bottom:0}.name{font-weight:750}.progress{height:8px;border-radius:99px;background:#eef1f0;overflow:hidden;min-width:110px}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px}.two{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.metric{padding:19px}.metric .mv{font-weight:850;font-size:21px;letter-spacing:-.03em;margin-top:9px}.metric .note{color:var(--muted);font-size:12px;margin-top:6px}.rank{display:inline-flex;width:25px;height:25px;border-radius:8px;background:var(--soft);color:var(--accent2);align-items:center;justify-content:center;font-weight:850}.hidden{display:none!important}.empty{color:var(--muted);text-align:center;padding:28px!important}.payout-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.manager-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.manager-card{padding:18px}.manager-card b{display:block;margin-top:8px;font-size:20px}.muted{color:var(--muted)}.footer{color:#98a09d;font-size:11px;text-align:center;padding:28px 0 0}.topbar-mobile{display:none}
-@media(max-width:1100px){.grid5{grid-template-columns:repeat(3,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.manager-grid{grid-template-columns:1fr}}
-@media(max-width:780px){:root{--sidebar:0px}.sidebar{position:static;width:auto;height:auto;padding:12px}.brand{padding-bottom:12px}.nav{flex-direction:row;overflow:auto}.nav button{white-space:nowrap}.main{margin-left:0;padding:14px}.hero{padding:24px 20px}.hero-row{flex-direction:column}.tools{justify-content:flex-start}.grid5{grid-template-columns:repeat(2,1fr)}.payout-head{grid-template-columns:1fr}.table{min-width:680px}}
-@media(max-width:520px){.grid5,.metrics{grid-template-columns:1fr}.value{font-size:28px}}
-
-    .number-tools{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
-    .number-search{width:min(100%,420px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;font:inherit;color:var(--text);outline:none}
-    .number-search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,214,180,.12)}
-    .number-meta{font-size:13px;color:var(--muted)}
-    .phone-number{font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.2px}
+:root{--bg:#f4f6f5;--card:#fff;--dark:#111417;--text:#171a1d;--muted:#7b8488;--line:#e5e9e7;--accent:#35d6b4;--soft:#e5fbf5;--shadow:0 14px 36px rgba(17,20,23,.06);--r:20px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.shell{width:min(100% - 32px,1440px);margin:0 auto;padding:24px 0 48px}
+.hero{background:var(--dark);color:#fff;border-radius:28px;padding:30px 34px;box-shadow:var(--shadow)}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#9da7a4;font-weight:800}
+h1{margin:8px 0 5px;font-size:38px;letter-spacing:-.04em}
+.subtitle{margin:0;color:#bdc5c2}
+.accent-line{width:70px;height:4px;border-radius:10px;background:var(--accent);margin-top:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.kpi{padding:20px 22px}
+.label{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.value{font-size:30px;font-weight:900;margin-top:7px;letter-spacing:-.04em}
+.section{margin-top:20px}
+.section-title{font-size:18px;margin:0 0 12px}
+.tools{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.search{width:min(100%,430px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;font:inherit;outline:none}
+.search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,214,180,.12)}
+.meta{font-size:13px;color:var(--muted)}
+.table-card{overflow:hidden}
+.scroll{overflow:auto;max-height:72vh}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th,td{padding:13px 16px;border-bottom:1px solid var(--line);text-align:left}
+th{position:sticky;top:0;background:#f9fbfa;z-index:2;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td{font-size:14px}
+.rank{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;background:var(--soft);font-weight:900}
+.phone{font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:.2px}
+.mask{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:800}
+.badge{display:inline-block;padding:5px 9px;border-radius:10px;background:var(--soft);font-size:12px;font-weight:900}
+.footer{color:var(--muted);font-size:12px;text-align:center;padding-top:22px}
+@media(max-width:720px){.stats{grid-template-columns:1fr}.shell{width:min(100% - 20px,1440px);padding-top:10px}.hero{padding:24px 20px;border-radius:22px}h1{font-size:31px}}
 </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar">
-  <div class="brand"><span class="brandmark"></span>Агентство Связи</div>
-  <nav class="nav">
-    <button class="active" data-view="clean">Мегафон Чечня</button>
-    <button data-view="all">Общие продажи</button>
-    <button data-view="payouts">Выплаты за продажу</button>
-  </nav>
-  <div class="sidebar-foot">«Мегафон Чечня» — номера только из файла «1С приемка (3).xlsx».</div>
-</aside>
-<main class="main"><div class="shell">
+<main class="shell">
   <section class="hero">
-    <div class="hero-row">
-      <div><div class="eyebrow">Продажи красивых номеров</div><h1 id="title">Мегафон Чечня</h1><p id="subtitle">Реестр номеров из файла «1С приемка (3).xlsx»</p><div class="accent-line"></div></div>
-      <div class="tools"><select id="month" class="select"><option value="sep">Сентябрь 2026</option><option value="aug">Август 2026</option></select><div class="pill">Обновлено: <b id="updated">—</b></div></div>
-    </div>
+    <div class="eyebrow">Эльдаров Ахмед</div>
+    <h1>Мегафон Чечня</h1>
+    <p class="subtitle">Номера и маски из файла «1С приемка (3).xlsx»</p>
+    <div class="accent-line"></div>
   </section>
 
-  <div id="inventoryView" class="hidden">
-    <section class="section">
-      <div class="grid5">
-        <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="numberCount">—</div></article>
-        <article class="card kpi"><div class="label">Найдено</div><div class="value" id="numberFound">—</div></article>
-      </div>
-    </section>
-    <section class="section">
-      <h2 class="section-title">Номера Мегафон Чечня</h2>
-      <div class="number-tools">
-        <input id="numberSearch" class="number-search" type="search" placeholder="Поиск по номеру…" autocomplete="off">
-        <div class="number-meta">Источник: 1С приемка (3).xlsx · 1600 уникальных номеров</div>
-      </div>
-      <div class="card table-card"><div class="scroll"><table class="table" style="min-width:520px">
-        <thead><tr><th>#</th><th>Номер телефона</th></tr></thead>
-        <tbody id="numberRows"></tbody>
-      </table></div></div>
-    </section>
-  </div>
+  <section class="stats">
+    <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="total">—</div></article>
+    <article class="card kpi"><div class="label">Уникальных масок</div><div class="value" id="masksCount">—</div></article>
+    <article class="card kpi"><div class="label">Найдено</div><div class="value" id="found">—</div></article>
+  </section>
 
-  <div id="salesView">
-    <section class="grid5" id="kpis"></section>
-    <section class="section"><h2 class="section-title">План и факт по направлениям</h2><div class="card table-card"><div class="scroll"><table class="table"><thead><tr><th>Направление</th><th>План</th><th>Факт</th><th>Выполнение</th><th>Осталось</th><th>Прогресс</th></tr></thead><tbody id="plans"></tbody></table></div></div></section>
-    <section class="section"><h2 class="section-title">Продажи по датам</h2><div class="card table-card"><div class="scroll"><table class="table"><thead><tr><th>Дата</th><th>Личные продажи</th><th>ЦПО</th><th>Приложение</th><th>Итого</th><th>Количество</th></tr></thead><tbody id="dailyRows"></tbody></table></div></div></section>
-    <section class="section"><div class="two"><div><h2 class="section-title">Топ партнёров</h2><div class="card table-card"><div class="scroll"><table class="table" style="min-width:520px"><thead><tr><th>#</th><th>Партнёр</th><th>Продаж</th><th>Сумма</th></tr></thead><tbody id="partners"></tbody></table></div></div></div><div><h2 class="section-title">Топ-10 масок</h2><div class="card table-card"><div class="scroll"><table class="table" style="min-width:520px"><thead><tr><th>#</th><th>Маска</th><th>Количество</th><th>Продажи</th></tr></thead><tbody id="masks"></tbody></table></div></div></div></div></section>
-    <section class="section"><h2 class="section-title">Ключевые показатели дня</h2><div class="metrics" id="dayMetrics"></div></section>
-    <section class="section"><h2 class="section-title">Прогноз</h2><div class="metrics" id="forecast"></div></section>
-  </div>
+  <section class="section">
+    <h2 class="section-title">Номера и маски</h2>
+    <div class="tools">
+      <input id="search" class="search" type="search" placeholder="Поиск по номеру или маске…" autocomplete="off">
+      <div class="meta">Источник: 1С приемка (3).xlsx · используются символы *, a, b, c, d, s</div>
+    </div>
+    <div class="card table-card">
+      <div class="scroll">
+        <table>
+          <thead><tr><th>#</th><th>Номер телефона</th><th>Маска</th></tr></thead>
+          <tbody id="rows"><tr><td colspan="3">Загрузка…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <div class="footer">Агентство Связи · Мегафон Чечня</div>
+</main>
 
-  <div id="payoutsView" class="hidden">
-    <section class="section payout-head" id="payoutKpis"></section>
-    <section class="section"><h2 class="section-title">Менеджеры ЦПО</h2><div class="manager-grid" id="managerCards"></div></section>
-    <section class="section"><h2 class="section-title">Детализация выплат</h2><div class="card table-card"><div class="scroll"><table class="table"><thead><tr><th>Дата</th><th>Менеджер</th><th>Номер телефона</th><th>Сумма продажи</th><th>Ставка</th><th>Выплата</th></tr></thead><tbody id="payoutRows"></tbody></table></div></div></section>
-  </div>
-  <div class="footer">Агентство Связи · Дашборд продаж</div>
-</div></main>
-</div>
 <script>
-const DATA={
-aug:{updated:'31.08.2026',clean:{sales:1404260,margin:951464.27,profit:.6775556307,count:135,avg:10401.9259,directions:[['Личные продажи',3138172,1156840,755883.7,86,.6534038415,13451.6279,.823807557,.368634989],['ЦПО',644576,109300,88926.24,13,.8135978042,8407.6923,.077834589,.169568833],['Приложение',234490,138120,106654.33,36,.7721859977,3836.6667,.0983578539,.589022986]],partners:[['Осипян',36,297200],['Норайр',8,50300],['Сабир',4,290000]],masks:[['***aaaa***',10,23540],['***aaa****',8,30780],['******abab',8,21280],['***aaabbcc',5,21000],['***aaaabb*',5,10640],['*****ababa',3,14300],['**********',3,7300],['******aabb',3,7200],['*****00000',2,152000],['*****99999',2,126000]],daily:[['01.08.2026',0,5000,0,5000,1],['02.08.2026',0,0,4800,4800,2],['03.08.2026',8000,0,2400,10400,5],['04.08.2026',4000,0,7440,11440,5],['05.08.2026',2000,6000,11680,19680,7],['06.08.2026',0,9300,0,9300,2],['07.08.2026',0,0,6400,6400,2],['08.08.2026',0,0,4000,4000,1],['09.08.2026',0,5000,2400,7400,2],['10.08.2026',209000,0,5600,214600,5],['11.08.2026',4500,0,0,4500,2],['12.08.2026',3000,0,0,3000,1],['13.08.2026',38000,0,2400,40400,4],['14.08.2026',111800,3000,0,114800,10],['15.08.2026',0,0,7440,7440,1],['16.08.2026',0,0,4800,4800,2],['17.08.2026',43500,0,6400,49900,9],['18.08.2026',21900,39000,2400,63300,12],['19.08.2026',7400,0,0,7400,3],['20.08.2026',45500,0,0,45500,3],['21.08.2026',193800,0,5040,198840,8],['22.08.2026',0,0,2400,2400,1],['23.08.2026',0,0,8000,8000,3],['24.08.2026',225300,0,2400,227700,10],['25.08.2026',4000,0,6800,10800,3],['26.08.2026',35000,0,2400,37400,4],['27.08.2026',20000,5000,0,25000,8],['28.08.2026',160140,0,32280,192420,15],['29.08.2026',0,0,0,0,0],['30.08.2026',0,37000,10640,47640,3],['31.08.2026',20000,0,0,20000,1]]},
-all:{sales:1716560,margin:1168728.72,profit:.6808551522,count:197,avg:8713.5025,directions:[['Личные продажи',3138172,1469140,973148.15,148,.6623930667,9926.6216,.855862889,.468151523],['ЦПО',644576,109300,88926.24,13,.8135978042,8407.6923,.0636738593,.169568833],['Приложение',234490,138120,106654.33,36,.7721859977,3836.6667,.0804632521,.589022986]],partners:[['Осипян',36,297200],['Амигос',29,85300],['Слава Блэк',17,75200],['Асад',10,100000],['Норайр',8,50300],['Сабир',4,290000],['АКОПЯН',4,9600],['Шелунс',4,4000],['Зиновкин',3,74400],['Мирзоян',3,7200]],masks:[['******abab',11,27280],['***aaaa***',11,25640],['***aaa****',10,34880],['*****ababa',8,22900],['***aaabbcc',6,24500],['***aaaabb*',6,12740],['******aabb',5,11200],['***aabacac',5,7800],['******0a0a',4,7400],['*****99999',3,196000]],daily:[['01.08.2026',0,5000,0,5000,1],['02.08.2026',0,0,4800,4800,2],['03.08.2026',8000,0,2400,10400,5],['04.08.2026',4000,0,7440,11440,5],['05.08.2026',34000,6000,11680,51680,13],['06.08.2026',0,9300,0,9300,2],['07.08.2026',0,0,6400,6400,2],['08.08.2026',0,0,4000,4000,1],['09.08.2026',0,5000,2400,7400,2],['10.08.2026',231400,0,5600,237000,8],['11.08.2026',74500,0,0,74500,3],['12.08.2026',3000,0,0,3000,1],['13.08.2026',38000,0,2400,40400,4],['14.08.2026',196100,3000,0,199100,42],['15.08.2026',0,0,7440,7440,1],['16.08.2026',0,0,4800,4800,2],['17.08.2026',44700,0,6400,51100,10],['18.08.2026',21900,39000,2400,63300,12],['19.08.2026',7400,0,0,7400,3],['20.08.2026',82200,0,0,82200,6],['21.08.2026',193800,0,5040,198840,8],['22.08.2026',0,0,2400,2400,1],['23.08.2026',0,0,8000,8000,3],['24.08.2026',254100,0,2400,256500,14],['25.08.2026',8500,0,6800,15300,4],['26.08.2026',35000,0,2400,37400,4],['27.08.2026',22400,5000,0,27400,10],['28.08.2026',190140,0,32280,222420,24],['29.08.2026',0,0,0,0,0],['30.08.2026',0,37000,10640,47640,3],['31.08.2026',20000,0,0,20000,1]]},payout:{count:13,sales:109300,total:8920,managers:[['Назаров Дмитрий Александрович',3,15000,1500],['Хасянов Илсаф Ханнянович',7,22300,2230],['Хусеинов Руфат Рафекович',3,72000,5190]],rows:[['01.08.2026','Назаров Дмитрий Александрович','2274484',5000,10,500],['05.08.2026','Назаров Дмитрий Александрович','9225530',5000,10,500],['05.08.2026','Хасянов Илсаф Ханнянович','9654158444',1000,10,100],['06.08.2026','Хасянов Илсаф Ханнянович','9199998000',6000,10,600],['06.08.2026','Хасянов Илсаф Ханнянович','9666781808',3300,10,330],['09.08.2026','Назаров Дмитрий Александрович','9328889922',5000,10,500],['14.08.2026','Хасянов Илсаф Ханнянович','9660502727',3000,10,300],['18.08.2026','Хасянов Илсаф Ханнянович','9670716767',3000,10,300],['18.08.2026','Хасянов Илсаф Ханнянович','9808001009',3000,10,300],['18.08.2026','Хасянов Илсаф Ханнянович','9820009007',3000,10,300],['18.08.2026','Хусеинов Руфат Рафекович','9238888866',30000,7,2100],['27.08.2026','Хусеинов Руфат Рафекович','9886886688',5000,10,500],['30.08.2026','Хусеинов Руфат Рафекович','9150604444',37000,7,2590]]}},
-sep:{updated:'10.09.2026',clean:{sales:901770,margin:681187.45,profit:.7553893454,count:74,avg:12186.0811,directions:[['Личные продажи',3295081,497140,337341.05,50,.6785634831,9942.8,.5512935671,.150873378],['ЦПО',641568,347350,298018.74,11,.8579782352,31577.2727,.3851869102,.541407926],['Приложение',257939,57280,45827.66,13,.8000638966,4406.1538,.0635195227,.222068008]],partners:[['Осипян',18,82500],['Чили',5,25000],['Норайр',5,10000]],masks:[['******abab',5,9800],['*****aaaa*',4,10240],['***aaaa***',4,8400],['***aaa****',3,14000],['******abba',3,7640],['***abbbaba',2,19000],['***aababba',2,10000],['***aabbaab',2,10000],['***aaa0000',1,240000],['***999999b',1,120000]],daily:[['01.09.2026',27140,0,2400,29540,5],['02.09.2026',6000,48000,11440,65440,7],['03.09.2026',171500,0,26400,197900,12],['04.09.2026',118000,12000,2400,132400,14],['05.09.2026',0,240000,2640,242640,2],['06.09.2026',0,0,7200,7200,3],['07.09.2026',56000,3350,2400,61750,17],['08.09.2026',110000,3000,2400,115400,6],['09.09.2026',8500,41000,0,49500,8]]},all:{sales:1371570,margin:1002968.6,profit:.7312558601,count:113,avg:12137.7876,directions:[['Личные продажи',3295081,966940,659122.2,89,.6816578071,10864.4944,.7049877148,.293449539],['ЦПО',641568,347350,298018.74,11,.8579782352,31577.2727,.2532499253,.541407926],['Приложение',257939,57280,45827.66,13,.8000638966,4406.1538,.0417623599,.222068008]],partners:[['Осипян',18,82500],['Слава Блэк',16,241200],['Амигос',10,25300],['Оганесян',9,115500],['Чили',5,25000],['Норайр',5,10000],['Нерсисян',4,25000],['Асад',3,86000],['Артемьев',2,20000],['Мезенцев',2,7640]],masks:[['******abab',5,9800],['*****aaaa*',4,10240],['***aaaa***',4,8400],['****ababab',3,52500],['******aabb',3,22000],['***aaa****',3,14000],['*****ababa',3,12800],['******abba',3,7640],['***abbbaba',2,19000],['***aababba',2,10000]],daily:[['01.09.2026',108140,0,2400,110540,7],['02.09.2026',6000,48000,11440,65440,7],['03.09.2026',171500,0,26400,197900,12],['04.09.2026',329000,12000,2400,343400,28],['05.09.2026',0,240000,2640,242640,2],['06.09.2026',0,0,7200,7200,3],['07.09.2026',79700,3350,2400,85450,20],['08.09.2026',154300,3000,2400,159700,11],['09.09.2026',118300,41000,0,159300,23]]},payout:{count:11,sales:347350,total:25225,managers:[['Назаров Дмитрий Александрович',4,54350,4085],['Хасянов Илсаф Ханнянович',6,53000,4340],['Хусеинов Руфат Рафекович',1,240000,16800]],rows:[[null,'Назаров Дмитрий Александрович','9309937777',45000,7,3150],[null,'Назаров Дмитрий Александрович','9060000924',3000,10,300],[null,'Хасянов Илсаф Ханнянович','9651055055',3000,10,300],[null,'Хасянов Илсаф Ханнянович','9999995739',9000,10,900],[null,'Хусеинов Руфат Рафекович','9684440000',240000,7,16800],[null,'Назаров Дмитрий Александрович','9151172111',3350,10,335],[null,'Хасянов Илсаф Ханнянович','9099790790',3000,10,300],[null,'Хасянов Илсаф Ханнянович','9647290440',3000,10,300],[null,'Хасянов Илсаф Ханнянович','9687290440',3000,10,300],[null,'Хасянов Илсаф Ханнянович','9251789999',32000,7,2240],[null,'Назаров Дмитрий Александрович','9329990536',3000,10,300]]}}
-};
-let view='clean';
-const R=n=>Math.round(Number(n||0)).toLocaleString('ru-RU')+' ₽';
-const P=n=>(Number(n||0)*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+'%';
+const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
+let DATA=[];
+
 const N=n=>Number(n||0).toLocaleString('ru-RU');
-function monthData(){return DATA[document.getElementById('month').value]}
-function salesData(){return monthData()[view]}
-let MEGAFON_NUMBERS=[];
-let numbersLoaded=false;
-async function loadMegafonNumbers(){
-  if(numbersLoaded)return;
-  const files=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
-  const parts=await Promise.all(files.map(x=>fetch(x).then(r=>{if(!r.ok)throw new Error('Не удалось загрузить '+x);return r.text()})));
-  MEGAFON_NUMBERS=parts.flatMap(t=>t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean));
-  numbersLoaded=true;
+function phone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
+
+function repeatMask(num){
+  const digits=[...num];
+  const info={};
+  digits.forEach((d,i)=>{
+    if(!info[d]) info[d]={count:0,first:i};
+    info[d].count++;
+  });
+  const chosen=Object.entries(info)
+    .filter(([,v])=>v.count>=2)
+    .sort((a,b)=>b[1].count-a[1].count || a[1].first-b[1].first)
+    .slice(0,4);
+  const letters=['a','b','c','d'];
+  const map={};
+  chosen.sort((a,b)=>a[1].first-b[1].first).forEach(([d],i)=>map[d]=letters[i]);
+  return digits.map(d=>map[d]||'*').join('');
 }
-function formatPhone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
-function renderNumberRows(list){
-  document.getElementById('numberFound').textContent=N(list.length);
-  document.getElementById('numberRows').innerHTML=list.map((n,i)=>`<tr><td><span class="rank">${i+1}</span></td><td class="name phone-number">${formatPhone(n)}</td></tr>`).join('');
-}
-async function renderNumbers(){
-  const rows=document.getElementById('numberRows');
-  rows.innerHTML='<tr><td colspan="2" class="name">Загрузка номеров…</td></tr>';
-  try{
-    await loadMegafonNumbers();
-    document.getElementById('numberCount').textContent=N(MEGAFON_NUMBERS.length);
-    const q=document.getElementById('numberSearch').value.replace(/\D/g,'');
-    const filtered=q?MEGAFON_NUMBERS.filter(n=>n.includes(q)):MEGAFON_NUMBERS;
-    renderNumberRows(filtered);
-  }catch(e){
-    rows.innerHTML='<tr><td colspan="2" class="name">Ошибка загрузки списка номеров</td></tr>';
-    document.getElementById('numberCount').textContent='—';
-    document.getElementById('numberFound').textContent='—';
+
+function sequenceMask(num){
+  const d=[...num].map(Number);
+  const mark=new Array(d.length).fill(false);
+  let i=0;
+  while(i<d.length-2){
+    const step=d[i+1]-d[i];
+    if(step!==1 && step!==-1){i++;continue}
+    let j=i+1;
+    while(j<d.length-1 && d[j+1]-d[j]===step) j++;
+    if(j-i+1>=3){
+      for(let k=i;k<=j;k++) mark[k]=true;
+      i=j+1;
+    }else i++;
   }
+  return mark.map(x=>x?'s':'*').join('');
 }
-async function render(){
-  const m=monthData();
-  const sales=document.getElementById('salesView'),pay=document.getElementById('payoutsView'),inv=document.getElementById('inventoryView'),month=document.getElementById('month');
-  if(view==='clean'){
-    sales.classList.add('hidden');pay.classList.add('hidden');inv.classList.remove('hidden');month.style.display='none';
-    document.getElementById('updated').textContent='24.09.2026';
-    document.getElementById('title').textContent='Мегафон Чечня';
-    document.getElementById('subtitle').textContent='Реестр номеров только из файла «1С приемка (3).xlsx»';
-    await renderNumbers();return;
-  }
-  inv.classList.add('hidden');month.style.display='';
-  document.getElementById('updated').textContent=m.updated;
-  if(view==='payouts'){
-    sales.classList.add('hidden');pay.classList.remove('hidden');
-    document.getElementById('title').textContent='Выплаты за продажу';
-    document.getElementById('subtitle').textContent='Начисления менеджерам ЦПО';
-    renderPayouts(m.payout);return;
-  }
-  sales.classList.remove('hidden');pay.classList.add('hidden');
-  document.getElementById('title').textContent='Общие продажи';
-  document.getElementById('subtitle').textContent='Все продажи исходного файла без исключений';
-  renderSales(salesData(),m);
+
+function strength(mask){return [...mask].filter(x=>x==='*').length}
+function maskFor(num){
+  const r=repeatMask(num), s=sequenceMask(num);
+  if(strength(s)<strength(r)) return s;
+  return r;
 }
-function renderSales(d,m){document.getElementById('kpis').innerHTML=[['Продажи',R(d.sales)],['Маржа',R(d.margin)],['Рентабельность',P(d.profit)],['Количество продаж',N(d.count)],['Средний чек',R(d.avg)]].map(x=>`<article class="card kpi"><div class="label">${x[0]}</div><div class="value">${x[1]}</div></article>`).join('');document.getElementById('plans').innerHTML=d.directions.map(x=>`<tr><td class="name">${x[0]}</td><td>${R(x[1])}</td><td>${R(x[2])}</td><td>${P(x[8])}</td><td>${R(Math.max(0,x[1]-x[2]))}</td><td><div class="progress"><span style="width:${Math.min(100,x[8]*100)}%"></span></div></td></tr>`).join('');document.getElementById('dailyRows').innerHTML=d.daily.map(x=>`<tr>${x.map((v,i)=>`<td${i===0?' class="name"':''}>${i===0?v:(i===5?N(v):R(v))}</td>`).join('')}</tr>`).join('');document.getElementById('partners').innerHTML=d.partners.map((x,i)=>`<tr><td><span class="rank">${i+1}</span></td><td class="name">${x[0]}</td><td>${N(x[1])}</td><td>${R(x[2])}</td></tr>`).join('');document.getElementById('masks').innerHTML=d.masks.map((x,i)=>`<tr><td><span class="rank">${i+1}</span></td><td class="name">${x[0]}</td><td>${N(x[1])}</td><td>${R(x[2])}</td></tr>`).join('');const days=d.daily.filter(x=>x[4]>0);const elapsed=d.daily.length;const monthDays=document.getElementById('month').value==='aug'?31:30;const totalPlan=d.directions.reduce((s,x)=>s+x[1],0);const best=days.reduce((a,b)=>a[4]>=b[4]?a:b,days[0]||['—',0,0,0,0,0]);const avgDaily=elapsed?d.sales/elapsed:0;const daysLeft=Math.max(0,monthDays-elapsed);const remaining=Math.max(0,totalPlan-d.sales);const need=daysLeft?remaining/daysLeft:0;document.getElementById('dayMetrics').innerHTML=[['Средние продажи в день',R(avgDaily)],['Лучший день',R(best[4]),best[0]],['Нужно продавать в день',R(need)],['Дней осталось',N(daysLeft)],['Выполнение общего плана',P(d.sales/totalPlan)],['Осталось до плана',R(remaining)]].map(x=>`<article class="card metric"><div class="label">${x[0]}</div><div class="mv">${x[1]}</div>${x[2]?`<div class="note">${x[2]}</div>`:''}</article>`).join('');const forecast=elapsed?d.sales/elapsed*monthDays:0;document.getElementById('forecast').innerHTML=[['План на месяц',R(totalPlan)],['Прогноз продаж на месяц',R(forecast)],['Прогноз выполнения плана',P(forecast/totalPlan)],['Прогнозный разрыв до плана',R(totalPlan-forecast)]].map(x=>`<article class="card metric"><div class="label">${x[0]}</div><div class="mv">${x[1]}</div></article>`).join('')}
-function renderPayouts(p){document.getElementById('payoutKpis').innerHTML=[['Количество продаж',N(p.count)],['Сумма продаж',R(p.sales)],['Начислено менеджерам',R(p.total)]].map(x=>`<article class="card kpi"><div class="label">${x[0]}</div><div class="value">${x[1]}</div></article>`).join('');document.getElementById('managerCards').innerHTML=p.managers.map(x=>`<article class="card manager-card"><div class="label">${x[0]}</div><b>${R(x[3])}</b><div class="muted" style="margin-top:7px;font-size:12px">${N(x[1])} продаж · ${R(x[2])}</div></article>`).join('');document.getElementById('payoutRows').innerHTML=p.rows.map(x=>`<tr><td>${x[0]||'—'}</td><td class="name">${x[1]}</td><td>${x[2]}</td><td>${R(x[3])}</td><td>${N(x[4])}%</td><td>${R(x[5])}</td></tr>`).join('')}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');view=b.dataset.view;render()}));document.getElementById('month').addEventListener('change',render);
-document.getElementById('numberSearch').addEventListener('input',()=>{if(view==='clean')renderNumbers()});
-render();
+
+async function load(){
+  const parts=await Promise.all(FILES.map(f=>fetch(f).then(r=>{
+    if(!r.ok) throw new Error(f);
+    return r.text();
+  })));
+  const nums=parts.flatMap(t=>t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean));
+  DATA=nums.map(n=>({number:n,mask:maskFor(n)}));
+  document.getElementById('total').textContent=N(DATA.length);
+  document.getElementById('masksCount').textContent=N(new Set(DATA.map(x=>x.mask)).size);
+  render();
+}
+function render(){
+  const q=document.getElementById('search').value.trim().toLowerCase().replace(/\s+/g,'');
+  const digits=q.replace(/\D/g,'');
+  const filtered=!q?DATA:DATA.filter(x=>{
+    const mask=x.mask.toLowerCase();
+    return (digits && x.number.includes(digits)) || mask.includes(q);
+  });
+  document.getElementById('found').textContent=N(filtered.length);
+  document.getElementById('rows').innerHTML=filtered.map((x,i)=>
+    '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td></tr>'
+  ).join('') || '<tr><td colspan="3">Ничего не найдено</td></tr>';
+}
+document.getElementById('search').addEventListener('input',render);
+load().catch(()=>{document.getElementById('rows').innerHTML='<tr><td colspan="3">Ошибка загрузки списка номеров</td></tr>'});
 </script>
-</body></html>
+</body>
+</html>
