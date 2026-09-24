@@ -51,7 +51,7 @@ td{font-size:14px}
   <section class="hero">
     <div class="eyebrow">Эльдаров Ахмед</div>
     <h1 id="pageTitle">Мегафон Чечня</h1>
-    <p class="subtitle" id="pageSubtitle">Номера и маски из файла «1С приемка (3).xlsx»</p>
+    <p class="subtitle" id="pageSubtitle"></p>
     <div class="accent-line"></div>
     <div class="tabs">
       <button class="tab active" data-tab="megafon">Мегафон Чечня</button>
@@ -105,7 +105,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-7</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-8</div>
 </main>
 
 <script>
@@ -216,7 +216,7 @@ function switchTab(tab){
   document.getElementById('activationsView').classList.toggle('hidden',tab!=='activations');
   if(tab==='megafon'){
     document.getElementById('pageTitle').textContent='Мегафон Чечня';
-    document.getElementById('pageSubtitle').textContent='Номера и маски из файла «1С приемка (3).xlsx»';
+    document.getElementById('pageSubtitle').textContent='';
   }else{
     document.getElementById('pageTitle').textContent='Активации';
     document.getElementById('pageSubtitle').textContent='Только новые активации, без номеров из «Мегафон Чечня»';
