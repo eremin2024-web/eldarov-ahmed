@@ -89,9 +89,9 @@ td{font-size:14px}
 
   <div id="activationsView" class="hidden">
     <section class="stats">
-      <article class="card kpi"><div class="label">Активаций после исключений</div><div class="value" id="activationCount">0</div></article>
+      <article class="card kpi"><div class="label">Активаций</div><div class="value" id="activationCount">0</div></article>
       
-      <article class="card kpi"><div class="label">Найдено</div><div class="value" id="activationFound">0</div></article>
+      
     </section>
     <section class="section">
       <h2 class="section-title">Активации</h2>
@@ -111,7 +111,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-20</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-21</div>
 </main>
 
 <script src="data/activations-loader.js?v=20"></script>
@@ -293,7 +293,6 @@ function renderActivations(){
     x.tariff.toLowerCase().includes(q)
   );
   document.getElementById('activationCount').textContent=N(byMonth.length);
-  document.getElementById('activationFound').textContent=N(filtered.length);
   document.getElementById('activationRows').innerHTML=filtered.length
     ?filtered.map(x=>'<tr><td class="phone">'+phone(x.number)+'</td><td>'+x.operator+'</td><td>'+x.date+'</td><td>'+x.tariff+'</td></tr>').join('')
     :'<tr><td colspan="4">Ничего не найдено</td></tr>';
