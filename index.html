@@ -110,7 +110,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-13</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-14</div>
 </main>
 
 <script>
@@ -184,6 +184,31 @@ async function load(){
   document.getElementById('activatedCount').textContent=N(activatedInMegafon.size);
   render();
   renderActivations();
+}
+function activationMonthKey(dateStr){
+  const m=String(dateStr||'').match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+  return m?m[3]+'-'+m[2]:'';
+}
+function activationMonthLabel(key){
+  const names={'01':'Январь','02':'Февраль','03':'Март','04':'Апрель','05':'Май','06':'Июнь','07':'Июль','08':'Август','09':'Сентябрь','10':'Октябрь','11':'Ноябрь','12':'Декабрь'};
+  const parts=String(key||'').split('-');
+  const y=parts[0]||'';
+  const m=parts[1]||'';
+  return (names[m]||m)+(y?' '+y:'');
+}
+function renderActivationMonths(valid){
+  const months=[...new Set(valid.map(x=>activationMonthKey(x.date)).filter(Boolean))].sort();
+  if(ACTIVE_MONTH!=='all'&&!months.includes(ACTIVE_MONTH))ACTIVE_MONTH='all';
+  const wrap=document.getElementById('activationMonths');
+  if(!wrap)return;
+  wrap.innerHTML=['all',...months].map(key=>{
+    const label=key==='all'?'Все месяцы':activationMonthLabel(key);
+    return '<button class="month-tab'+(ACTIVE_MONTH===key?' active':'')+'" data-month="'+key+'">'+label+'</button>';
+  }).join('');
+  wrap.querySelectorAll('.month-tab').forEach(b=>b.addEventListener('click',()=>{
+    ACTIVE_MONTH=b.dataset.month;
+    renderActivations();
+  }));
 }
 function megafonRowMonth(number,activationMap){
   const shipped=(number==='9288853655'||number==='9288853832')?'03.09.2026':'';
