@@ -65,8 +65,8 @@ td{font-size:14px}
   <div id="megafonView">
   <section class="stats">
     <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="total">—</div></article>
-    <article class="card kpi"><div class="label">Активировано</div><div class="value" id="activatedCount">—</div></article>
-    <article class="card kpi"><div class="label">Остаток</div><div class="value" id="remainingCount">—</div></article>
+    <article class="card kpi" id="activatedCard"><div class="label">Активировано</div><div class="value" id="activatedCount">—</div></article>
+    <article class="card kpi" id="remainingCard"><div class="label">Остаток</div><div class="value" id="remainingCount">—</div></article>
   </section>
 
   <section class="section">
@@ -111,7 +111,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-15</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-16</div>
 </main>
 
 <script>
@@ -242,6 +242,10 @@ function render(){
   if(MEGAFON_MONTH!=='all'){
     base=DATA.filter(x=>megafonRowMonth(x.number,activationMap)===MEGAFON_MONTH);
   }
+
+  const monthlyView=MEGAFON_MONTH!=='all';
+  document.getElementById('activatedCard').classList.toggle('hidden',monthlyView);
+  document.getElementById('remainingCard').classList.toggle('hidden',monthlyView);
 
   const filtered=!q?base:base.filter(x=>{
     const mask=x.mask.toLowerCase();
