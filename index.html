@@ -39,8 +39,17 @@ h1{margin:8px 0 5px;font-size:38px;letter-spacing:-.04em}
 .trend-delta.up{background:#e5fbf5;color:#15936f}
 .trend-delta.down{background:#fff0f0;color:#c94b4b}
 .trend-bar-wrap{width:100%;height:145px;display:flex;align-items:flex-end}
-.trend-bar{width:100%;border-radius:14px 14px 6px 6px;background:linear-gradient(180deg,var(--accent),#28b899);min-height:14px}
+.trend-stack{width:100%;display:flex;flex-direction:column-reverse;justify-content:flex-start;overflow:hidden;border-radius:14px 14px 6px 6px;min-height:14px;background:#eef2f0}
+.trend-segment{width:100%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;line-height:1;color:#111;min-height:0}
+.trend-segment.mts{background:#e74c3c;color:#fff}
+.trend-segment.beeline{background:#f4d03f;color:#161616}
+.trend-segment.megafon{background:#2ecc71;color:#0f2517}
+.trend-segment.yota{background:#3498db;color:#fff}
 .trend-label{font-size:13px;font-weight:800;text-align:center;color:var(--text)}
+.trend-legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.trend-legend-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--text)}
+.trend-dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.trend-dot.mts{background:#e74c3c}.trend-dot.beeline{background:#f4d03f}.trend-dot.megafon{background:#2ecc71}.trend-dot.yota{background:#3498db}
 @media(max-width:760px){.trend-chart{grid-template-columns:1fr;min-height:auto}.trend-bar-wrap{height:70px}.trend-col{display:grid;grid-template-columns:90px 55px 1fr 95px;align-items:center}.trend-bar-wrap{order:3}.trend-label{order:4;text-align:left}}
 .search{width:min(100%,430px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;font:inherit;outline:none}
 .search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,214,180,.12)}
@@ -114,6 +123,12 @@ td{font-size:14px}
         <h2 class="section-title">Динамика активаций по месяцам</h2>
         <div class="card" style="padding:18px 20px">
           <div id="activationTrendChart" class="trend-chart"></div>
+          <div class="trend-legend">
+            <div class="trend-legend-item"><span class="trend-dot mts"></span>МТС</div>
+            <div class="trend-legend-item"><span class="trend-dot beeline"></span>Билайн</div>
+            <div class="trend-legend-item"><span class="trend-dot megafon"></span>Мегафон</div>
+            <div class="trend-legend-item"><span class="trend-dot yota"></span>Yota</div>
+          </div>
         </div>
       </section>
       <div class="card table-card">
@@ -127,10 +142,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-22</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-23</div>
 </main>
 
-<script src="data/activations-loader.js?v=22"></script>
+<script src="data/activations-loader.js?v=23"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -296,30 +311,48 @@ function render(){
     return '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td><td>'+x.shipped+'</td><td>'+x.activated+'</td></tr>';
   }).join('') || '<tr><td colspan="5">Ничего не найдено</td></tr>';
 }
+function normalizeOperatorName(name){
+  const n=String(name||'').trim().toLowerCase();
+  if(n.includes('мтс'))return 'mts';
+  if(n.includes('билайн')||n.includes('beeline'))return 'beeline';
+  if(n.includes('мегафон')||n.includes('megafon'))return 'megafon';
+  if(n.includes('yota')||n.includes('йота'))return 'yota';
+  return 'other';
+}
 function renderActivationTrend(valid){
   const order=['2026-05','2026-06','2026-07','2026-08','2026-09'];
   const labels={'2026-05':'Май 2026','2026-06':'Июнь 2026','2026-07':'Июль 2026','2026-08':'Август 2026','2026-09':'Сентябрь 2026'};
   const counts={};
-  order.forEach(k=>counts[k]=0);
+  order.forEach(k=>counts[k]={mts:0,beeline:0,megafon:0,yota:0,total:0});
   valid.forEach(x=>{
     const key=activationMonthKey(x.date);
-    if(Object.prototype.hasOwnProperty.call(counts,key))counts[key]++;
+    if(!Object.prototype.hasOwnProperty.call(counts,key))return;
+    const op=normalizeOperatorName(x.operator);
+    if(op!=='other')counts[key][op]++;
+    counts[key].total++;
   });
-  const max=Math.max(...order.map(k=>counts[k]),1);
+  const max=Math.max(...order.map(k=>counts[k].total),1);
   const chart=document.getElementById('activationTrendChart');
   if(!chart)return;
   chart.innerHTML=order.map((key,i)=>{
-    const value=counts[key];
-    const prev=i===0?null:counts[order[i-1]];
-    const delta=prev===null?null:value-prev;
-    const height=Math.max(14,Math.round((value/max)*145));
+    const c=counts[key];
+    const prev=i===0?null:counts[order[i-1]].total;
+    const delta=prev===null?null:c.total-prev;
+    const barHeight=Math.max(14,Math.round((c.total/max)*145));
     let deltaHtml='<div class="trend-delta">—</div>';
     if(delta!==null){
       if(delta>0)deltaHtml='<div class="trend-delta up">+'+delta+'</div>';
       else if(delta<0)deltaHtml='<div class="trend-delta down">'+delta+'</div>';
       else deltaHtml='<div class="trend-delta">0</div>';
     }
-    return '<div class="trend-col"><div class="trend-value">'+value+'</div>'+deltaHtml+'<div class="trend-bar-wrap"><div class="trend-bar" style="height:'+height+'px"></div></div><div class="trend-label">'+labels[key]+'</div></div>';
+    const segments=[
+      ['mts',c.mts],['beeline',c.beeline],['megafon',c.megafon],['yota',c.yota]
+    ].map(([op,val])=>{
+      if(!val)return '';
+      const h=Math.max(8,(val/c.total)*barHeight);
+      return '<div class="trend-segment '+op+'" style="height:'+h+'px" title="'+val+'">'+(h>=22?val:'')+'</div>';
+    }).join('');
+    return '<div class="trend-col"><div class="trend-value">'+c.total+'</div>'+deltaHtml+'<div class="trend-bar-wrap"><div class="trend-stack" style="height:'+barHeight+'px">'+segments+'</div></div><div class="trend-label">'+labels[key]+'</div></div>';
   }).join('');
 }
 function renderActivations(){
