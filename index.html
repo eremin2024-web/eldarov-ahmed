@@ -17,6 +17,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-sy
 h1{margin:8px 0 5px;font-size:38px;letter-spacing:-.04em}
 .subtitle{margin:0;color:#bdc5c2}
 .accent-line{width:70px;height:4px;border-radius:10px;background:var(--accent);margin-top:18px}
+.tabs{display:flex;gap:10px;margin:18px 0 0;flex-wrap:wrap}
+.tab{border:1px solid #39413f;background:#202624;color:#cbd3d0;border-radius:13px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#10221e}
+.hidden{display:none!important}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
 .kpi{padding:20px 22px}
@@ -46,11 +50,16 @@ td{font-size:14px}
 <main class="shell">
   <section class="hero">
     <div class="eyebrow">Эльдаров Ахмед</div>
-    <h1>Мегафон Чечня</h1>
-    <p class="subtitle">Номера и маски из файла «1С приемка (3).xlsx»</p>
+    <h1 id="pageTitle">Мегафон Чечня</h1>
+    <p class="subtitle" id="pageSubtitle">Номера и маски из файла «1С приемка (3).xlsx»</p>
     <div class="accent-line"></div>
+    <div class="tabs">
+      <button class="tab active" data-tab="megafon">Мегафон Чечня</button>
+      <button class="tab" data-tab="activations">Активации</button>
+    </div>
   </section>
 
+  <div id="megafonView">
   <section class="stats">
     <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="total">—</div></article>
     <article class="card kpi"><div class="label">Уникальных масок</div><div class="value" id="masksCount">—</div></article>
@@ -72,12 +81,39 @@ td{font-size:14px}
       </div>
     </div>
   </section>
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-2</div>
+  </div>
+
+  <div id="activationsView" class="hidden">
+    <section class="stats">
+      <article class="card kpi"><div class="label">Активаций</div><div class="value" id="activationCount">0</div></article>
+      <article class="card kpi"><div class="label">База исключений</div><div class="value" id="exclusionCount">—</div></article>
+      <article class="card kpi"><div class="label">Найдено</div><div class="value" id="activationFound">0</div></article>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Активации</h2>
+      <div class="tools">
+        <input id="activationSearch" class="search" type="search" placeholder="Поиск по номеру…" autocomplete="off">
+        <div class="meta">Номера из «Мегафон Чечня» в активациях не учитываются</div>
+      </div>
+      <div class="card table-card">
+        <div class="scroll">
+          <table>
+            <thead><tr><th>#</th><th>Номер телефона</th><th>Статус</th></tr></thead>
+            <tbody id="activationRows"><tr><td colspan="3">Новых активаций пока нет</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-3</div>
 </main>
 
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
+let ACTIVATIONS=[];
+let EXCLUSION_SET=new Set();
 
 const N=n=>Number(n||0).toLocaleString('ru-RU');
 function phone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
@@ -129,10 +165,13 @@ async function load(){
     return r.text();
   })));
   const nums=parts.flatMap(t=>t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean));
+  EXCLUSION_SET=new Set(nums);
   DATA=nums.map(n=>({number:n,mask:maskFor(n)}));
   document.getElementById('total').textContent=N(DATA.length);
   document.getElementById('masksCount').textContent=N(new Set(DATA.map(x=>x.mask)).size);
+  document.getElementById('exclusionCount').textContent=N(EXCLUSION_SET.size);
   render();
+  renderActivations();
 }
 function render(){
   const q=document.getElementById('search').value.trim().toLowerCase().replace(/\s+/g,'');
@@ -146,6 +185,31 @@ function render(){
     '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td></tr>'
   ).join('') || '<tr><td colspan="3">Ничего не найдено</td></tr>';
 }
+function renderActivations(){
+  const q=document.getElementById('activationSearch').value.replace(/\D/g,'');
+  const valid=ACTIVATIONS.filter(n=>!EXCLUSION_SET.has(n));
+  const filtered=q?valid.filter(n=>n.includes(q)):valid;
+  document.getElementById('activationCount').textContent=N(valid.length);
+  document.getElementById('activationFound').textContent=N(filtered.length);
+  document.getElementById('activationRows').innerHTML=filtered.length
+    ?filtered.map((n,i)=>'<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(n)+'</td><td><span class="badge">Активация</span></td></tr>').join('')
+    :'<tr><td colspan="3">Новых активаций пока нет</td></tr>';
+}
+function switchTab(tab){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.getElementById('megafonView').classList.toggle('hidden',tab!=='megafon');
+  document.getElementById('activationsView').classList.toggle('hidden',tab!=='activations');
+  if(tab==='megafon'){
+    document.getElementById('pageTitle').textContent='Мегафон Чечня';
+    document.getElementById('pageSubtitle').textContent='Номера и маски из файла «1С приемка (3).xlsx»';
+  }else{
+    document.getElementById('pageTitle').textContent='Активации';
+    document.getElementById('pageSubtitle').textContent='Только новые активации, без номеров из «Мегафон Чечня»';
+    renderActivations();
+  }
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+document.getElementById('activationSearch').addEventListener('input',renderActivations);
 document.getElementById('search').addEventListener('input',render);
 load().catch(()=>{document.getElementById('rows').innerHTML='<tr><td colspan="3">Ошибка загрузки списка номеров</td></tr>'});
 </script>
