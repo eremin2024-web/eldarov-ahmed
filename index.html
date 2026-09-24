@@ -74,8 +74,8 @@ td{font-size:14px}
     <div class="card table-card">
       <div class="scroll">
         <table>
-          <thead><tr><th>#</th><th>Номер телефона</th><th>Маска</th></tr></thead>
-          <tbody id="rows"><tr><td colspan="3">Загрузка…</td></tr></tbody>
+          <thead><tr><th>#</th><th>Номер телефона</th><th>Маска</th><th>Отгружено</th><th>Активировано</th></tr></thead>
+          <tbody id="rows"><tr><td colspan="5">Загрузка…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -105,7 +105,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-6</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-7</div>
 </main>
 
 <script>
@@ -187,9 +187,12 @@ function render(){
     const mask=x.mask.toLowerCase();
     return (digits && x.number.includes(digits)) || mask.includes(q);
   });
-  document.getElementById('rows').innerHTML=filtered.map((x,i)=>
-    '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td></tr>'
-  ).join('') || '<tr><td colspan="3">Ничего не найдено</td></tr>';
+  const activationMap=new Map(ACTIVATIONS.map(x=>[x.number,x.date.split(' ')[0]]));
+  document.getElementById('rows').innerHTML=filtered.map((x,i)=>{
+    const activated=activationMap.get(x.number)||'—';
+    const shipped=activated!=='—'?'03.09.2026':'—';
+    return '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td><td>'+shipped+'</td><td>'+activated+'</td></tr>';
+  }).join('') || '<tr><td colspan="5">Ничего не найдено</td></tr>';
 }
 function renderActivations(){
   const q=document.getElementById('activationSearch').value.trim().toLowerCase();
