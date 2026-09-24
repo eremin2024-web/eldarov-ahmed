@@ -88,7 +88,7 @@ td{font-size:14px}
   <div id="activationsView" class="hidden">
     <section class="stats">
       <article class="card kpi"><div class="label">Активаций после исключений</div><div class="value" id="activationCount">0</div></article>
-      <article class="card kpi"><div class="label">База исключений</div><div class="value" id="exclusionCount">—</div></article>
+      
       <article class="card kpi"><div class="label">Найдено</div><div class="value" id="activationFound">0</div></article>
     </section>
     <section class="section">
@@ -109,7 +109,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-9</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-10</div>
 </main>
 
 <script>
@@ -179,7 +179,6 @@ async function load(){
   DATA=nums.map(n=>({number:n,mask:maskFor(n)}));
   ACTIVATIONS=activationData;
   document.getElementById('total').textContent=N(DATA.length);
-  document.getElementById('exclusionCount').textContent=N(EXCLUSION_SET.size);
   const activatedInMegafon=new Set(ACTIVATIONS.filter(x=>EXCLUSION_SET.has(x.number)).map(x=>x.number));
   document.getElementById('activatedCount').textContent=N(activatedInMegafon.size);
   render();
