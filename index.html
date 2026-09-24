@@ -10,6 +10,12 @@
 @media(max-width:1100px){.grid5{grid-template-columns:repeat(3,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.manager-grid{grid-template-columns:1fr}}
 @media(max-width:780px){:root{--sidebar:0px}.sidebar{position:static;width:auto;height:auto;padding:12px}.brand{padding-bottom:12px}.nav{flex-direction:row;overflow:auto}.nav button{white-space:nowrap}.main{margin-left:0;padding:14px}.hero{padding:24px 20px}.hero-row{flex-direction:column}.tools{justify-content:flex-start}.grid5{grid-template-columns:repeat(2,1fr)}.payout-head{grid-template-columns:1fr}.table{min-width:680px}}
 @media(max-width:520px){.grid5,.metrics{grid-template-columns:1fr}.value{font-size:28px}}
+
+    .number-tools{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+    .number-search{width:min(100%,420px);background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 16px;font:inherit;color:var(--text);outline:none}
+    .number-search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(53,214,180,.12)}
+    .number-meta{font-size:13px;color:var(--muted)}
+    .phone-number{font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:.2px}
 </style>
 </head>
 <body>
@@ -21,15 +27,35 @@
     <button data-view="all">Общие продажи</button>
     <button data-view="payouts">Выплаты за продажу</button>
   </nav>
-  <div class="sidebar-foot">Данные в этой версии — из последнего найденного рабочего файла. Исключения применяются только к «Чистым продажам».</div>
+  <div class="sidebar-foot">«Мегафон Чечня» — номера только из файла «1С приемка (3).xlsx».</div>
 </aside>
 <main class="main"><div class="shell">
   <section class="hero">
     <div class="hero-row">
-      <div><div class="eyebrow">Продажи красивых номеров</div><h1 id="title">Мегафон Чечня</h1><p id="subtitle">Оперативная статистика по чистым продажам</p><div class="accent-line"></div></div>
+      <div><div class="eyebrow">Продажи красивых номеров</div><h1 id="title">Мегафон Чечня</h1><p id="subtitle">Реестр номеров из файла «1С приемка (3).xlsx»</p><div class="accent-line"></div></div>
       <div class="tools"><select id="month" class="select"><option value="sep">Сентябрь 2026</option><option value="aug">Август 2026</option></select><div class="pill">Обновлено: <b id="updated">—</b></div></div>
     </div>
   </section>
+
+  <div id="inventoryView" class="hidden">
+    <section class="section">
+      <div class="grid5">
+        <article class="card kpi"><div class="label">Всего номеров</div><div class="value" id="numberCount">—</div></article>
+        <article class="card kpi"><div class="label">Найдено</div><div class="value" id="numberFound">—</div></article>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-title">Номера Мегафон Чечня</h2>
+      <div class="number-tools">
+        <input id="numberSearch" class="number-search" type="search" placeholder="Поиск по номеру…" autocomplete="off">
+        <div class="number-meta">Источник: 1С приемка (3).xlsx · 1600 уникальных номеров</div>
+      </div>
+      <div class="card table-card"><div class="scroll"><table class="table" style="min-width:520px">
+        <thead><tr><th>#</th><th>Номер телефона</th></tr></thead>
+        <tbody id="numberRows"></tbody>
+      </table></div></div>
+    </section>
+  </div>
 
   <div id="salesView">
     <section class="grid5" id="kpis"></section>
@@ -60,9 +86,62 @@ const P=n=>(Number(n||0)*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+
 const N=n=>Number(n||0).toLocaleString('ru-RU');
 function monthData(){return DATA[document.getElementById('month').value]}
 function salesData(){return monthData()[view]}
-function render(){const m=monthData();document.getElementById('updated').textContent=m.updated;const sales=document.getElementById('salesView'),pay=document.getElementById('payoutsView');if(view==='payouts'){sales.classList.add('hidden');pay.classList.remove('hidden');document.getElementById('title').textContent='Выплаты за продажу';document.getElementById('subtitle').textContent='Начисления менеджерам ЦПО';renderPayouts(m.payout);return}else{sales.classList.remove('hidden');pay.classList.add('hidden');document.getElementById('title').textContent=view==='clean'?'Мегафон Чечня':'Общие продажи';document.getElementById('subtitle').textContent=view==='clean'?'Основная статистика без исключённых продаж':'Все продажи исходного файла без исключений';renderSales(salesData(),m)}}
+let MEGAFON_NUMBERS=[];
+let numbersLoaded=false;
+async function loadMegafonNumbers(){
+  if(numbersLoaded)return;
+  const files=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
+  const parts=await Promise.all(files.map(x=>fetch(x).then(r=>{if(!r.ok)throw new Error('Не удалось загрузить '+x);return r.text()})));
+  MEGAFON_NUMBERS=parts.flatMap(t=>t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean));
+  numbersLoaded=true;
+}
+function formatPhone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
+function renderNumberRows(list){
+  document.getElementById('numberFound').textContent=N(list.length);
+  document.getElementById('numberRows').innerHTML=list.map((n,i)=>`<tr><td><span class="rank">${i+1}</span></td><td class="name phone-number">${formatPhone(n)}</td></tr>`).join('');
+}
+async function renderNumbers(){
+  const rows=document.getElementById('numberRows');
+  rows.innerHTML='<tr><td colspan="2" class="name">Загрузка номеров…</td></tr>';
+  try{
+    await loadMegafonNumbers();
+    document.getElementById('numberCount').textContent=N(MEGAFON_NUMBERS.length);
+    const q=document.getElementById('numberSearch').value.replace(/\D/g,'');
+    const filtered=q?MEGAFON_NUMBERS.filter(n=>n.includes(q)):MEGAFON_NUMBERS;
+    renderNumberRows(filtered);
+  }catch(e){
+    rows.innerHTML='<tr><td colspan="2" class="name">Ошибка загрузки списка номеров</td></tr>';
+    document.getElementById('numberCount').textContent='—';
+    document.getElementById('numberFound').textContent='—';
+  }
+}
+async function render(){
+  const m=monthData();
+  const sales=document.getElementById('salesView'),pay=document.getElementById('payoutsView'),inv=document.getElementById('inventoryView'),month=document.getElementById('month');
+  if(view==='clean'){
+    sales.classList.add('hidden');pay.classList.add('hidden');inv.classList.remove('hidden');month.style.display='none';
+    document.getElementById('updated').textContent='24.09.2026';
+    document.getElementById('title').textContent='Мегафон Чечня';
+    document.getElementById('subtitle').textContent='Реестр номеров только из файла «1С приемка (3).xlsx»';
+    await renderNumbers();return;
+  }
+  inv.classList.add('hidden');month.style.display='';
+  document.getElementById('updated').textContent=m.updated;
+  if(view==='payouts'){
+    sales.classList.add('hidden');pay.classList.remove('hidden');
+    document.getElementById('title').textContent='Выплаты за продажу';
+    document.getElementById('subtitle').textContent='Начисления менеджерам ЦПО';
+    renderPayouts(m.payout);return;
+  }
+  sales.classList.remove('hidden');pay.classList.add('hidden');
+  document.getElementById('title').textContent='Общие продажи';
+  document.getElementById('subtitle').textContent='Все продажи исходного файла без исключений';
+  renderSales(salesData(),m);
+}
 function renderSales(d,m){document.getElementById('kpis').innerHTML=[['Продажи',R(d.sales)],['Маржа',R(d.margin)],['Рентабельность',P(d.profit)],['Количество продаж',N(d.count)],['Средний чек',R(d.avg)]].map(x=>`<article class="card kpi"><div class="label">${x[0]}</div><div class="value">${x[1]}</div></article>`).join('');document.getElementById('plans').innerHTML=d.directions.map(x=>`<tr><td class="name">${x[0]}</td><td>${R(x[1])}</td><td>${R(x[2])}</td><td>${P(x[8])}</td><td>${R(Math.max(0,x[1]-x[2]))}</td><td><div class="progress"><span style="width:${Math.min(100,x[8]*100)}%"></span></div></td></tr>`).join('');document.getElementById('dailyRows').innerHTML=d.daily.map(x=>`<tr>${x.map((v,i)=>`<td${i===0?' class="name"':''}>${i===0?v:(i===5?N(v):R(v))}</td>`).join('')}</tr>`).join('');document.getElementById('partners').innerHTML=d.partners.map((x,i)=>`<tr><td><span class="rank">${i+1}</span></td><td class="name">${x[0]}</td><td>${N(x[1])}</td><td>${R(x[2])}</td></tr>`).join('');document.getElementById('masks').innerHTML=d.masks.map((x,i)=>`<tr><td><span class="rank">${i+1}</span></td><td class="name">${x[0]}</td><td>${N(x[1])}</td><td>${R(x[2])}</td></tr>`).join('');const days=d.daily.filter(x=>x[4]>0);const elapsed=d.daily.length;const monthDays=document.getElementById('month').value==='aug'?31:30;const totalPlan=d.directions.reduce((s,x)=>s+x[1],0);const best=days.reduce((a,b)=>a[4]>=b[4]?a:b,days[0]||['—',0,0,0,0,0]);const avgDaily=elapsed?d.sales/elapsed:0;const daysLeft=Math.max(0,monthDays-elapsed);const remaining=Math.max(0,totalPlan-d.sales);const need=daysLeft?remaining/daysLeft:0;document.getElementById('dayMetrics').innerHTML=[['Средние продажи в день',R(avgDaily)],['Лучший день',R(best[4]),best[0]],['Нужно продавать в день',R(need)],['Дней осталось',N(daysLeft)],['Выполнение общего плана',P(d.sales/totalPlan)],['Осталось до плана',R(remaining)]].map(x=>`<article class="card metric"><div class="label">${x[0]}</div><div class="mv">${x[1]}</div>${x[2]?`<div class="note">${x[2]}</div>`:''}</article>`).join('');const forecast=elapsed?d.sales/elapsed*monthDays:0;document.getElementById('forecast').innerHTML=[['План на месяц',R(totalPlan)],['Прогноз продаж на месяц',R(forecast)],['Прогноз выполнения плана',P(forecast/totalPlan)],['Прогнозный разрыв до плана',R(totalPlan-forecast)]].map(x=>`<article class="card metric"><div class="label">${x[0]}</div><div class="mv">${x[1]}</div></article>`).join('')}
 function renderPayouts(p){document.getElementById('payoutKpis').innerHTML=[['Количество продаж',N(p.count)],['Сумма продаж',R(p.sales)],['Начислено менеджерам',R(p.total)]].map(x=>`<article class="card kpi"><div class="label">${x[0]}</div><div class="value">${x[1]}</div></article>`).join('');document.getElementById('managerCards').innerHTML=p.managers.map(x=>`<article class="card manager-card"><div class="label">${x[0]}</div><b>${R(x[3])}</b><div class="muted" style="margin-top:7px;font-size:12px">${N(x[1])} продаж · ${R(x[2])}</div></article>`).join('');document.getElementById('payoutRows').innerHTML=p.rows.map(x=>`<tr><td>${x[0]||'—'}</td><td class="name">${x[1]}</td><td>${x[2]}</td><td>${R(x[3])}</td><td>${N(x[4])}%</td><td>${R(x[5])}</td></tr>`).join('')}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');view=b.dataset.view;render()}));document.getElementById('month').addEventListener('change',render);render();
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');view=b.dataset.view;render()}));document.getElementById('month').addEventListener('change',render);
+document.getElementById('numberSearch').addEventListener('input',()=>{if(view==='clean')renderNumbers()});
+render();
 </script>
 </body></html>
