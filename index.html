@@ -109,7 +109,7 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-10</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-11</div>
 </main>
 
 <script>
@@ -239,6 +239,7 @@ function renderActivations(){
     :'<tr><td colspan="4">Ничего не найдено</td></tr>';
 }
 function switchTab(tab){
+  localStorage.setItem('eldarovActiveTab',tab);
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
   document.getElementById('megafonView').classList.toggle('hidden',tab!=='megafon');
   document.getElementById('activationsView').classList.toggle('hidden',tab!=='activations');
@@ -255,9 +256,8 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>swit
 document.getElementById('activationSearch').addEventListener('input',renderActivations);
 document.getElementById('search').addEventListener('input',render);
 
-// При загрузке/обновлении страницы всегда открываем «Мегафон Чечня».
-switchTab('megafon');
-window.addEventListener('pageshow',()=>switchTab('megafon'));
+const savedTab=localStorage.getItem('eldarovActiveTab');
+switchTab(savedTab==='activations'?'activations':'megafon');
 
 load().catch(()=>{document.getElementById('rows').innerHTML='<tr><td colspan="3">Ошибка загрузки списка номеров</td></tr>'});
 </script>
