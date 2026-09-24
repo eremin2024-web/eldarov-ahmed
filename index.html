@@ -85,28 +85,28 @@ td{font-size:14px}
 
   <div id="activationsView" class="hidden">
     <section class="stats">
-      <article class="card kpi"><div class="label">Активаций</div><div class="value" id="activationCount">0</div></article>
+      <article class="card kpi"><div class="label">Активаций после исключений</div><div class="value" id="activationCount">0</div></article>
       <article class="card kpi"><div class="label">База исключений</div><div class="value" id="exclusionCount">—</div></article>
       <article class="card kpi"><div class="label">Найдено</div><div class="value" id="activationFound">0</div></article>
     </section>
     <section class="section">
       <h2 class="section-title">Активации</h2>
       <div class="tools">
-        <input id="activationSearch" class="search" type="search" placeholder="Поиск по номеру…" autocomplete="off">
+        <input id="activationSearch" class="search" type="search" placeholder="Поиск по номеру, оператору, дате или тарифу…" autocomplete="off">
         <div class="meta">Номера из «Мегафон Чечня» в активациях не учитываются</div>
       </div>
       <div class="card table-card">
         <div class="scroll">
           <table>
-            <thead><tr><th>#</th><th>Номер телефона</th><th>Статус</th></tr></thead>
-            <tbody id="activationRows"><tr><td colspan="3">Новых активаций пока нет</td></tr></tbody>
+            <thead><tr><th>№ абонента</th><th>Оператор</th><th>Дата активации</th><th>Тариф</th></tr></thead>
+            <tbody id="activationRows"><tr><td colspan="4">Загрузка активаций…</td></tr></tbody>
           </table>
         </div>
       </div>
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-3</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 24.09.2026-4</div>
 </main>
 
 <script>
@@ -160,13 +160,20 @@ function maskFor(num){
 }
 
 async function load(){
-  const parts=await Promise.all(FILES.map(f=>fetch(f).then(r=>{
-    if(!r.ok) throw new Error(f);
-    return r.text();
-  })));
+  const [parts,activationData]=await Promise.all([
+    Promise.all(FILES.map(f=>fetch(f).then(r=>{
+      if(!r.ok) throw new Error(f);
+      return r.text();
+    }))),
+    fetch('data/activations.json').then(r=>{
+      if(!r.ok) throw new Error('data/activations.json');
+      return r.json();
+    })
+  ]);
   const nums=parts.flatMap(t=>t.split(/\r?\n/).map(x=>x.trim()).filter(Boolean));
   EXCLUSION_SET=new Set(nums);
   DATA=nums.map(n=>({number:n,mask:maskFor(n)}));
+  ACTIVATIONS=activationData;
   document.getElementById('total').textContent=N(DATA.length);
   document.getElementById('masksCount').textContent=N(new Set(DATA.map(x=>x.mask)).size);
   document.getElementById('exclusionCount').textContent=N(EXCLUSION_SET.size);
@@ -186,14 +193,20 @@ function render(){
   ).join('') || '<tr><td colspan="3">Ничего не найдено</td></tr>';
 }
 function renderActivations(){
-  const q=document.getElementById('activationSearch').value.replace(/\D/g,'');
-  const valid=ACTIVATIONS.filter(n=>!EXCLUSION_SET.has(n));
-  const filtered=q?valid.filter(n=>n.includes(q)):valid;
+  const q=document.getElementById('activationSearch').value.trim().toLowerCase();
+  const digits=q.replace(/\D/g,'');
+  const valid=ACTIVATIONS.filter(x=>!EXCLUSION_SET.has(x.number));
+  const filtered=!q?valid:valid.filter(x=>
+    (digits && x.number.includes(digits)) ||
+    x.operator.toLowerCase().includes(q) ||
+    x.date.toLowerCase().includes(q) ||
+    x.tariff.toLowerCase().includes(q)
+  );
   document.getElementById('activationCount').textContent=N(valid.length);
   document.getElementById('activationFound').textContent=N(filtered.length);
   document.getElementById('activationRows').innerHTML=filtered.length
-    ?filtered.map((n,i)=>'<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(n)+'</td><td><span class="badge">Активация</span></td></tr>').join('')
-    :'<tr><td colspan="3">Новых активаций пока нет</td></tr>';
+    ?filtered.map(x=>'<tr><td class="phone">'+phone(x.number)+'</td><td>'+x.operator+'</td><td>'+x.date+'</td><td>'+x.tariff+'</td></tr>').join('')
+    :'<tr><td colspan="4">Ничего не найдено</td></tr>';
 }
 function switchTab(tab){
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
