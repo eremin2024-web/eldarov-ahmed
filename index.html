@@ -136,9 +136,9 @@ td{font-size:14px}
         </div>
       </section>
       <div class="list-toggle-row">
-        <button id="activationListToggle" class="list-toggle-btn" type="button">Скрыть</button>
+        <button id="activationListToggle" class="list-toggle-btn" type="button">Показать</button>
       </div>
-      <div class="card table-card" id="activationTableCard">
+      <div class="card table-card hidden" id="activationTableCard">
         <div class="scroll">
           <table>
             <thead><tr><th>№ абонента</th><th>Оператор</th><th>Дата активации</th><th>Тариф</th></tr></thead>
@@ -149,10 +149,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 25.09.2026-26</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 25.09.2026-27</div>
 </main>
 
-<script src="data/activations-loader.js?v=26"></script>
+<script src="data/activations-loader.js?v=27"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -397,7 +397,7 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>swit
 document.getElementById('activationSearch').addEventListener('input',renderActivations);
 document.getElementById('search').addEventListener('input',render);
 
-let ACTIVATION_LIST_VISIBLE=true;
+let ACTIVATION_LIST_VISIBLE=false;
 document.getElementById('activationListToggle').addEventListener('click',()=>{
   ACTIVATION_LIST_VISIBLE=!ACTIVATION_LIST_VISIBLE;
   document.getElementById('activationTableCard').classList.toggle('hidden',!ACTIVATION_LIST_VISIBLE);
