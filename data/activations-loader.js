@@ -16,7 +16,8 @@ window.loadExtendedActivations=async function(){
       number:String(row.number||''),
       operator:String(row.operator||''),
       date:String(row.date||''),
-      tariff:String(row.tariff||'')
+      tariff:String(row.tariff||''),
+      moved:String(row.moved||'')
     };
   });
   const seen=new Set();
