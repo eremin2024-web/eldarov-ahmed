@@ -152,10 +152,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 01.10.2026-33</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 01.10.2026-34</div>
 </main>
 
-<script src="data/activations-loader.js?v=33"></script>
+<script src="data/activations-loader.js?v=34"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -165,6 +165,13 @@ let ACTIVE_MONTH='all';
 let MEGAFON_MONTH='all';
 
 const N=n=>Number(n||0).toLocaleString('ru-RU');
+const HISTORICAL_ACTIVATION_COUNTS={
+  '2026-01':{mts:0,beeline:0,megafon:0,yota:0,total:0},
+  '2026-02':{mts:0,beeline:0,megafon:0,yota:0,total:0},
+  '2026-03':{mts:0,beeline:86,megafon:0,yota:0,total:86},
+  '2026-04':{mts:0,beeline:91,megafon:0,yota:0,total:91}
+};
+const HISTORICAL_ACTIVATION_TOTAL=177;
 function phone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
 
 function repeatMask(num){
@@ -330,10 +337,13 @@ function normalizeOperatorName(name){
   return 'other';
 }
 function renderActivationTrend(valid){
-  const order=['2026-05','2026-06','2026-07','2026-08','2026-09'];
-  const labels={'2026-05':'Май 2026','2026-06':'Июнь 2026','2026-07':'Июль 2026','2026-08':'Август 2026','2026-09':'Сентябрь 2026'};
+  const order=['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'];
+  const labels={'2026-01':'Январь 2026','2026-02':'Февраль 2026','2026-03':'Март 2026','2026-04':'Апрель 2026','2026-05':'Май 2026','2026-06':'Июнь 2026','2026-07':'Июль 2026','2026-08':'Август 2026','2026-09':'Сентябрь 2026'};
   const counts={};
-  order.forEach(k=>counts[k]={mts:0,beeline:0,megafon:0,yota:0,total:0});
+  order.forEach(k=>{
+    const h=HISTORICAL_ACTIVATION_COUNTS[k];
+    counts[k]=h?{...h}:{mts:0,beeline:0,megafon:0,yota:0,total:0};
+  });
   valid.forEach(x=>{
     const key=activationMonthKey(x.date);
     if(!Object.prototype.hasOwnProperty.call(counts,key))return;
@@ -378,7 +388,7 @@ function renderActivations(){
     x.date.toLowerCase().includes(q) ||
     x.tariff.toLowerCase().includes(q)
   );
-  document.getElementById('activationCount').textContent=N(allActivations.length);
+  document.getElementById('activationCount').textContent=N(HISTORICAL_ACTIVATION_TOTAL+allActivations.length);
   document.getElementById('activationRows').innerHTML=filtered.length
     ?filtered.map(x=>'<tr><td class="phone">'+phone(x.number)+'</td><td>'+x.operator+'</td><td>'+x.date+'</td><td>'+x.tariff+'</td></tr>').join('')
     :'<tr><td colspan="4">Ничего не найдено</td></tr>';
