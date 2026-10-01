@@ -7,7 +7,8 @@ window.loadExtendedActivations=async function(){
   const septemberFiles=[
     'data/activations_2026-09_a.json',
     'data/activations_2026-09_b.json',
-    'data/activations_2026-09_c.json'
+    'data/activations_2026-09_c.json',
+    'data/activations_2026-09_d.json'
   ];
   const [historyParts,augSep,septemberParts]=await Promise.all([
     Promise.all(historyFiles.map(function(f){return fetch(f).then(function(r){if(!r.ok)throw new Error(f);return r.json();});})),
