@@ -33,7 +33,7 @@ h1{margin:8px 0 5px;font-size:38px;letter-spacing:-.04em}
 .month-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}
 .month-tab{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;padding:9px 14px;font:inherit;font-weight:800;cursor:pointer}
 .month-tab.active{background:var(--accent);border-color:var(--accent);color:#10221e}
-.trend-chart{display:grid;grid-template-columns:repeat(9,1fr);gap:14px;align-items:end;min-height:230px;padding:8px 4px 2px}
+.trend-chart{display:grid;grid-template-columns:repeat(10,1fr);gap:14px;align-items:end;min-height:230px;padding:8px 4px 2px}
 .trend-col{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0}
 .trend-value{font-size:18px;font-weight:900;color:var(--text)}
 .trend-delta{font-size:12px;font-weight:900;border-radius:9px;padding:4px 8px;background:#f1f4f2;color:var(--muted)}
@@ -152,10 +152,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 02.10.2026-35</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 02.10.2026-36</div>
 </main>
 
-<script src="data/activations-loader.js?v=35"></script>
+<script src="data/activations-loader.js?v=36"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -169,9 +169,10 @@ const HISTORICAL_ACTIVATION_COUNTS={
   '2026-01':{mts:0,beeline:0,megafon:0,yota:0,total:0},
   '2026-02':{mts:0,beeline:0,megafon:0,yota:0,total:0},
   '2026-03':{mts:0,beeline:86,megafon:0,yota:0,total:86},
-  '2026-04':{mts:0,beeline:91,megafon:0,yota:0,total:91}
+  '2026-04':{mts:0,beeline:91,megafon:0,yota:0,total:91},
+  '2026-10':{mts:0,beeline:3,megafon:0,yota:0,total:3}
 };
-const HISTORICAL_ACTIVATION_TOTAL=177;
+const HISTORICAL_ACTIVATION_TOTAL=180;
 function phone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
 
 function repeatMask(num){
@@ -337,8 +338,8 @@ function normalizeOperatorName(name){
   return 'other';
 }
 function renderActivationTrend(valid){
-  const order=['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'];
-  const labels={'2026-01':'Январь 2026','2026-02':'Февраль 2026','2026-03':'Март 2026','2026-04':'Апрель 2026','2026-05':'Май 2026','2026-06':'Июнь 2026','2026-07':'Июль 2026','2026-08':'Август 2026','2026-09':'Сентябрь 2026'};
+  const order=['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10'];
+  const labels={'2026-01':'Январь 2026','2026-02':'Февраль 2026','2026-03':'Март 2026','2026-04':'Апрель 2026','2026-05':'Май 2026','2026-06':'Июнь 2026','2026-07':'Июль 2026','2026-08':'Август 2026','2026-09':'Сентябрь 2026','2026-10':'Октябрь 2026'};
   const counts={};
   order.forEach(k=>{
     const h=HISTORICAL_ACTIVATION_COUNTS[k];
