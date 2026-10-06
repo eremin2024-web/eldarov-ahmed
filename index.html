@@ -152,10 +152,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 05.10.2026-37</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 06.10.2026-38</div>
 </main>
 
-<script src="data/activations-loader.js?v=37"></script>
+<script src="data/activations-loader.js?v=38"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -170,10 +170,8 @@ const HISTORICAL_ACTIVATION_COUNTS={
   '2026-02':{mts:0,beeline:0,megafon:0,yota:0,total:0},
   '2026-03':{mts:0,beeline:86,megafon:0,yota:0,total:86},
   '2026-04':{mts:0,beeline:91,megafon:0,yota:0,total:91},
-  '2026-10':{mts:0,beeline:16,megafon:0,yota:0,total:16}
 };
 const HISTORICAL_ACTIVATION_TOTAL=177;
-const OCTOBER_ACTIVATION_TOTAL=16;
 function phone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
 
 function repeatMask(num){
@@ -390,7 +388,7 @@ function renderActivations(){
     x.date.toLowerCase().includes(q) ||
     x.tariff.toLowerCase().includes(q)
   );
-  document.getElementById('activationCount').textContent=N(HISTORICAL_ACTIVATION_TOTAL+allActivations.length+OCTOBER_ACTIVATION_TOTAL);
+  document.getElementById('activationCount').textContent=N(HISTORICAL_ACTIVATION_TOTAL+allActivations.length);
   document.getElementById('activationRows').innerHTML=filtered.length
     ?filtered.map(x=>'<tr><td class="phone">'+phone(x.number)+'</td><td>'+x.operator+'</td><td>'+x.date+'</td><td>'+x.tariff+'</td></tr>').join('')
     :'<tr><td colspan="4">Ничего не найдено</td></tr>';
