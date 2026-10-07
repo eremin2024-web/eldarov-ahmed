@@ -152,10 +152,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 06.10.2026-38</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 07.10.2026-39</div>
 </main>
 
-<script src="data/activations-loader.js?v=38"></script>
+<script src="data/activations-loader.js?v=39"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -172,6 +172,10 @@ const HISTORICAL_ACTIVATION_COUNTS={
   '2026-04':{mts:0,beeline:91,megafon:0,yota:0,total:91},
 };
 const HISTORICAL_ACTIVATION_TOTAL=177;
+const OCTOBER_CORRECTION_TOTAL=9;
+const OCTOBER_CORRECTION_BEELINE=6;
+const OCTOBER_CORRECTION_MEGAFON=3;
+const MEGAFON_ACTIVATION_CORRECTION=1;
 function phone(n){return '+7 ('+n.slice(0,3)+') '+n.slice(3,6)+'-'+n.slice(6,8)+'-'+n.slice(8)}
 
 function repeatMask(num){
@@ -321,8 +325,8 @@ function render(){
 
   document.getElementById('total').textContent=N(base.length);
   const activatedInBase=new Set(base.filter(x=>activationMap.has(x.number)).map(x=>x.number));
-  document.getElementById('activatedCount').textContent=N(activatedInBase.size);
-  document.getElementById('remainingCount').textContent=N(base.length-activatedInBase.size);
+  document.getElementById('activatedCount').textContent=N(activatedInBase.size+MEGAFON_ACTIVATION_CORRECTION);
+  document.getElementById('remainingCount').textContent=N(base.length-activatedInBase.size-MEGAFON_ACTIVATION_CORRECTION);
 
   document.getElementById('rows').innerHTML=filtered.map((x,i)=>{
     return '<tr><td><span class="rank">'+(i+1)+'</span></td><td class="phone">'+phone(x.number)+'</td><td><span class="badge mask">'+x.mask+'</span></td><td>'+x.shipped+'</td><td>'+x.activated+'</td></tr>';
@@ -351,6 +355,9 @@ function renderActivationTrend(valid){
     if(op!=='other')counts[key][op]++;
     counts[key].total++;
   });
+  counts['2026-10'].beeline+=OCTOBER_CORRECTION_BEELINE;
+  counts['2026-10'].megafon+=OCTOBER_CORRECTION_MEGAFON;
+  counts['2026-10'].total+=OCTOBER_CORRECTION_TOTAL;
   const max=Math.max(...order.map(k=>counts[k].total),1);
   const chart=document.getElementById('activationTrendChart');
   if(!chart)return;
@@ -388,7 +395,7 @@ function renderActivations(){
     x.date.toLowerCase().includes(q) ||
     x.tariff.toLowerCase().includes(q)
   );
-  document.getElementById('activationCount').textContent=N(HISTORICAL_ACTIVATION_TOTAL+allActivations.length);
+  document.getElementById('activationCount').textContent=N(HISTORICAL_ACTIVATION_TOTAL+allActivations.length+OCTOBER_CORRECTION_TOTAL);
   document.getElementById('activationRows').innerHTML=filtered.length
     ?filtered.map(x=>'<tr><td class="phone">'+phone(x.number)+'</td><td>'+x.operator+'</td><td>'+x.date+'</td><td>'+x.tariff+'</td></tr>').join('')
     :'<tr><td colspan="4">Ничего не найдено</td></tr>';
