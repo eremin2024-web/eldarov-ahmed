@@ -14,10 +14,14 @@ window.loadExtendedActivations=async function(){
     Promise.all(historyFiles.map(function(f){return fetch(f).then(function(r){if(!r.ok)throw new Error(f);return r.json();});})),
     fetch('data/activations.json').then(function(r){if(!r.ok)throw new Error('data/activations.json');return r.json();}),
     Promise.all(septemberFiles.map(function(f){return fetch(f).then(function(r){if(!r.ok)throw new Error(f);return r.json();});})),
-    fetch('data/activations_2026-10.json').then(function(r){if(!r.ok)throw new Error('data/activations_2026-10.json');return r.json();})
+    Promise.all([
+      'data/activations_2026-10.json',
+      'data/activations_2026-10_b.json',
+      'data/activations_2026-10_c.json'
+    ].map(function(f){return fetch(f).then(function(r){if(!r.ok)throw new Error(f);return r.json();});}))
   ]);
   const august=augSep.filter(function(row){return String(row.date||'').includes('.08.2026');});
-  const rows=[].concat.apply([],historyParts).concat(august).concat([].concat.apply([],septemberParts)).concat(october).map(function(row){
+  const rows=[].concat.apply([],historyParts).concat(august).concat([].concat.apply([],septemberParts)).concat([].concat.apply([],october)).map(function(row){
     return {
       number:String(row.number||''),
       operator:String(row.operator||''),
