@@ -152,10 +152,10 @@ td{font-size:14px}
     </section>
   </div>
 
-  <div class="footer">Агентство Связи · Мегафон Чечня · версия 12.10.2026-40</div>
+  <div class="footer">Агентство Связи · Мегафон Чечня · версия 16.10.2026-42</div>
 </main>
 
-<script src="data/activations-loader.js?v=40"></script>
+<script src="data/activations-loader.js?v=42"></script>
 <script>
 const FILES=['data/megafon_chechnya_1.txt','data/megafon_chechnya_2.txt','data/megafon_chechnya_3.txt','data/megafon_chechnya_4.txt'];
 let DATA=[];
@@ -260,10 +260,7 @@ function renderActivationMonths(valid){
 function megafonRowMonth(number,activationMap){
   const rec=activationMap.get(number);
   if(!rec)return '';
-  let shipped=rec.moved||'';
-  if(!shipped&&(number==='9288853655'||number==='9288853832'))shipped='03.09.2026';
-  const source=shipped||rec.date||'';
-  return activationMonthKey(source);
+  return activationMonthKey(rec.date||'');
 }
 function renderMegafonMonths(activationMap){
   const months=[...new Set(DATA.map(x=>megafonRowMonth(x.number,activationMap)).filter(Boolean))].sort();
